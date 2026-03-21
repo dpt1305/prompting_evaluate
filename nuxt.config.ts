@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     geminiApiKey: process.env.GEMINI_API_KEY || '', // Server-side only
+    geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
     public: {
       // Public variables here
     }

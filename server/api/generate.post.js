@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gemini-2.5-flash',
+        model: config.geminiModel,
         messages: [
           { role: 'user', content: prompt }
         ],
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     })
 
     const data = await response.json()
-    
+
     if (data.error) {
       console.error('API Error Response:', data.error)
       throw createError({

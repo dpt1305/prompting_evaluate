@@ -25,7 +25,7 @@ Return ONLY valid JSON (no markdown):
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gemini-2.5-flash',
+        model: config.geminiModel,
         messages: [
           { role: 'user', content: evaluationPrompt }
         ],
@@ -34,7 +34,7 @@ Return ONLY valid JSON (no markdown):
     })
 
     const data = await response.json()
-    
+
     if (data.error) {
       console.error('API Error Response:', data.error)
       throw createError({
@@ -52,7 +52,7 @@ Return ONLY valid JSON (no markdown):
     }
 
     const result = data.choices[0].message.content
-    
+
     // Handle potential markdown backticks in response (even with response_format, some proxies might return them)
     const cleanResult = result.replace(/```json|```/g, '').trim()
     return JSON.parse(cleanResult)
