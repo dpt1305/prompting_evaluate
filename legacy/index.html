@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompting Workshop Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <header>
+        <div class="logo">🚀 Prompting Workshop</div>
+        <div class="api-key-container">
+            <input type="password" id="apiKey" placeholder="Enter Gemini API Key">
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Left Side: User Workspace -->
+        <section class="workspace left-side">
+            <div class="glass-card challenge-card">
+                <h2>Current Challenge</h2>
+                <div id="challengeTitle" class="challenge-title">Loading challenge...</div>
+                <p id="challengeDescription" class="challenge-desc"></p>
+                <textarea id="userPrompt" placeholder="Type your prompt here..."></textarea>
+                <button id="submitBtn" class="primary-btn">Submit Answer</button>
+            </div>
+
+            <div class="glass-card result-card" id="userResultContainer">
+                <h3>Your Result</h3>
+                <div id="userResult" class="result-box">Result will appear here...</div>
+            </div>
+        </section>
+
+        <!-- Right Side: AI Upgrade (Initially Hidden) -->
+        <section class="workspace right-side hidden" id="aiSide">
+            <div class="glass-card feedback-card">
+                <div class="badge">AI FEEDBACK</div>
+                <h2>How to Improve</h2>
+                <div id="aiFeedback" class="feedback-text"></div>
+            </div>
+
+            <div class="glass-card suggestion-card highlight-card">
+                <h3>Optimized Prompt (ERA + Few-shot + CoT)</h3>
+                <div id="suggestedPrompt" class="suggestion-box"></div>
+                <button id="copyBtn" class="secondary-btn">Copy Suggested Prompt</button>
+            </div>
+
+            <div class="glass-card result-card">
+                <h3>Enhanced Result</h3>
+                <div id="aiResult" class="result-box"></div>
+            </div>
+
+            <div class="score-container">
+                <div class="score-label">Prompt Score</div>
+                <div class="score-value" id="scoreValue">0%</div>
+                <div class="score-bar"><div id="scoreFill" class="score-fill"></div></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="app.js"></script>
+</body>
+</html>

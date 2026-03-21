@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glass-blur: blur(12px);
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 min-h-screen overflow-x-hidden font-sans;
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl p-6 transition-all duration-300 shadow-sm;
+}
+
+.glass-card:hover {
+  @apply -translate-y-1 shadow-xl shadow-slate-200/50 border-accent-primary/20;
+}
+
+.primary-btn {
+  @apply w-full py-4 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-xl font-semibold text-white transition-all active:scale-[0.98] hover:brightness-110 shadow-md hover:shadow-lg;
+}
+
+.secondary-btn {
+  @apply px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors shadow-sm;
+}
+
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}

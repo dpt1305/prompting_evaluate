@@ -1,0 +1,62 @@
+[
+  {
+    "id": "rescheduling-a-meeting",
+    "title": "Rescheduling a Meeting",
+    "description": "Write a polite email to your team lead asking to move a 1:1 meeting from Monday 10 AM to Tuesday 2 PM because of a conflict with a client call.",
+    "icon": "📅"
+  },
+  {
+    "id": "meeting-action-points",
+    "title": "Meeting Action Points",
+    "description": "Turn these notes into clear action items: 'John to check budget; Sarah will email the design team; we need to finalize the date by Friday; next sync is Wednesday.'",
+    "icon": "📝"
+  },
+  {
+    "id": "excel-formula-help",
+    "title": "Excel Formula Help",
+    "description": "Explain in simple terms how to use the VLOOKUP function to find a price in a list of products, given the Product ID.",
+    "icon": "📊"
+  },
+  {
+    "id": "quarterly-review-outline",
+    "title": "Quarterly Review Outline",
+    "description": "Create a 5-slide outline for a 'Q3 Performance Review' presentation. Include topics like Key Wins, Challenges, and Goals for Q4.",
+    "icon": "📉"
+  },
+  {
+    "id": "polite-project-rejection",
+    "title": "Polite Project Rejection",
+    "description": "You are a Manager. Write a polite email to another department explaining that your team cannot take on their new request right now due to current workload.",
+    "icon": "🚫"
+  },
+  {
+    "id": "linkedin-work-update",
+    "title": "LinkedIn Work Update",
+    "description": "Write a professional LinkedIn post announcing the successful launch of the 'New Employee Portal' project. Thank the team and use 3 relevant hashtags.",
+    "icon": "🌐"
+  },
+  {
+    "id": "sales-data-summary",
+    "title": "Sales Data Summary",
+    "description": "Summarize this data for a quick update: Jan ($10k), Feb ($12k), Mar ($11k). What is the trend, and what is the total for Q1?",
+    "icon": "💰"
+  },
+  {
+    "id": "new-hire-onboarding",
+    "title": "New Hire Onboarding",
+    "description": "Write 3 helpful 'Day 1' tips for a new office administrator joining your team to make them feel welcome and organized.",
+    "icon": "🤝"
+  },
+  {
+    "id": "brainstorming-agenda",
+    "title": "Brainstorming Agenda",
+    "description": "Draft a 30-minute meeting agenda for a 'Team Culture Brainstorming' session. Include time for an icebreaker and idea sharing.",
+    "icon": "🧠"
+  },
+  {
+    "id": "office-move-announcement",
+    "title": "Office Move Announcement",
+    "description": "A draft says: 'We move next week. Bring your boxes.' Improve this into a professional and clear announcement for the whole company.",
+    "icon": "🏢"
+  }
+]

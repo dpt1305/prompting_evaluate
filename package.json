@@ -1,0 +1,27 @@
+{
+  "name": "1-Prompting_evaluate",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "lucide-vue-next": "^0.231.0",
+    "nuxt": "^4.4.2",
+    "pinia": "^2.1.7",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@pinia/nuxt": "^0.5.1",
+    "@types/node": "^25.5.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}
