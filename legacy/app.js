@@ -21,14 +21,14 @@ async function callGemini(apiKey, prompt) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gemini-2.5-flash',
+            model: (typeof process !== 'undefined' && process.env.AI_MODEL) || 'gemini-2.5-flash',
             messages: [
                 { role: 'user', content: prompt }
             ],
             temperature: 0.7
         })
     });
-    
+
     if (!response.ok) throw new Error(await response.text());
     const data = await response.json();
     if (data.error) throw new Error(data.error.message || 'API Error');
@@ -36,27 +36,10 @@ async function callGemini(apiKey, prompt) {
 }
 
 async function evaluatePrompt(apiKey, userPrompt, challenge) {
-    const evaluationPrompt = `
-        You are an expert Prompt Engineer. Evaluate the following prompt for the challenge: "${challenge.description}".
-        
-        User's Prompt: "${userPrompt}"
-        
-        Evaluate based on:
-        1. ERA (Entity, Role, Action)
-        2. Few-shot (Examples provided?)
-        3. CoT (Chain of Thought - step-by-step logic?)
-        
-        Output MUST be valid JSON with this structure:
-        {
-            "score": number (0-100),
-            "feedback": "Why the suggestion is better and what the human can improve. Mention ERA, Few-shot, CoT specifically.",
-            "suggestion": "Rewrite the user's prompt using ERA, Few-shot, and CoT to get the best result.",
-            "techniqueCheck": { "era": boolean, "fewShot": boolean, "cot": boolean }
-        }
-        
-        Return ONLY the JSON. No markdown blocks.
-    `;
-    
+    const evaluationPrompt = `Strict PE. Task:"${challenge.description}" Prompt:"${userPrompt}"
+Rules: ERA, FewShot(>=1,Max70 if !), CoT(Max80 if !). Score>90 only if perfect.
+JSON only: {"score":0..100,"feedback":"sharp","suggestion":"full","techniqueCheck":{"era":bool,"fewShot":bool,"cot":bool}}`;
+
     const result = await callGemini(apiKey, evaluationPrompt);
     try {
         // Handle potential markdown backticks in response
@@ -73,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userPromptInput = document.getElementById('userPrompt');
     const submitBtn = document.getElementById('submitBtn');
     const aiSide = document.getElementById('aiSide');
-    
+
     // UI Elements
     const challengeTitle = document.getElementById('challengeTitle');
     const challengeDesc = document.getElementById('challengeDescription');
@@ -130,12 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 2. Get AI evaluation and suggestion
             const evaluation = await evaluatePrompt(apiKey, prompt, challenge);
-            
+
             // 3. Reveal right side
             aiSide.classList.remove('hidden');
             aiFeedback.innerText = evaluation.feedback;
             suggestedPrompt.innerText = evaluation.suggestion;
-            
+
             // 4. Update score
             scoreValue.innerText = `${evaluation.score}%`;
             scoreFill.style.width = `${evaluation.score}%`;
@@ -186,14 +169,14 @@ function startConfetti() {
             p.y += p.speed;
             p.x += Math.sin(p.angleX) * 2;
             p.angleX += 0.05;
-            
+
             if (p.y < canvas.height) {
                 active = true;
                 ctx.save();
                 ctx.translate(p.x, p.y);
                 ctx.rotate(p.angleY);
                 ctx.fillStyle = p.color;
-                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
                 ctx.restore();
                 p.angleY += p.rotationSpeed;
             }

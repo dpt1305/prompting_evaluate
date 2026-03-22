@@ -54,5 +54,61 @@
     "score": 45,
     "challengeId": "new-hire-onboarding",
     "createdAt": "2026-03-20T13:29:04.281Z"
+  },
+  {
+    "id": "1774086630419",
+    "playerName": "Test User",
+    "score": 85,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-21T09:50:30.419Z"
+  },
+  {
+    "id": "1774086746429",
+    "playerName": "aaa",
+    "score": 75,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-21T09:52:26.429Z"
+  },
+  {
+    "id": "1774086805000",
+    "playerName": "aaa",
+    "score": 90,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-21T09:53:25.000Z"
+  },
+  {
+    "id": "1774087969082",
+    "playerName": "aaa",
+    "score": 90,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-21T10:12:49.082Z"
+  },
+  {
+    "id": "1774185391352",
+    "playerName": "aaa",
+    "score": 84,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-22T13:16:31.352Z"
+  },
+  {
+    "id": "1774185498257",
+    "playerName": "aaa",
+    "score": 74,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-22T13:18:18.257Z"
+  },
+  {
+    "id": "1774185926601",
+    "playerName": "aaa",
+    "score": 90,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-22T13:25:26.601Z"
+  },
+  {
+    "id": "1774186161116",
+    "playerName": "aaa",
+    "score": 85,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-22T13:29:21.116Z"
   }
 ]

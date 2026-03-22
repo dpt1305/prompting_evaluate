@@ -24,53 +24,66 @@ const formatMarkdown = (text) => {
   return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 }
 
+// Typewriter effect function simulating ChatGPT streaming
+const typeWriterEffect = async (text, updateFn, speed = 15) => {
+  if (!text) return
+  for (let i = 0; i < text.length; i++) {
+    updateFn(text.charAt(i))
+    await new Promise(resolve => setTimeout(resolve, speed))
+  }
+}
+
 const submitPrompt = async () => {
   if (!userPrompt.value.trim()) return
   
   isSubmitting.value = true
-  userResult.value = 'Executing your prompt...'
+  userResult.value = 'Analyzing prompt...'
   showAI.value = false
   evaluation.value = null
   aiResult.value = ''
   
   try {
-    // 1. Get User Result
-    const userRes = await $fetch('/api/generate', {
-      method: 'POST',
-      body: { prompt: userPrompt.value }
-    })
-    userResult.value = userRes
+    // Fetch User Result and Evaluation concurrently for faster perceived wait time
+    const [userRes, evalRes] = await Promise.all([
+      $fetch('/api/generate', { method: 'POST', body: { prompt: userPrompt.value } }),
+      $fetch('/api/evaluate', { 
+        method: 'POST', 
+        body: { userPrompt: userPrompt.value, challengeDescription: props.challenge.description } 
+      })
+    ])
 
-    // 2. Get Evaluation & Suggestion
-    const evalRes = await $fetch('/api/evaluate', {
-      method: 'POST',
-      body: { 
-        userPrompt: userPrompt.value,
-        challengeDescription: props.challenge.description
-      }
-    })
-    evaluation.value = evalRes
+    // Render User Result with typewriter
+    userResult.value = ''
+    const typeUserRes = typeWriterEffect(userRes, (char) => userResult.value += char, 5)
 
-    // 3. Show AI Side
+    // Prepare AI side for typing
+    evaluation.value = { ...evalRes, feedback: '', suggestion: '' }
     showAI.value = true
 
-    // 4. Get AI Result for the suggestion
-    aiResult.value = 'Executing AI suggestion...'
-    const aiRes = await $fetch('/api/generate', {
-      method: 'POST',
-      body: { prompt: evalRes.suggestion }
-    })
-    aiResult.value = aiRes
+    // Fetch AI Result in the background based on optimized suggestion
+    const aiResPromise = $fetch('/api/generate', { method: 'POST', body: { prompt: evalRes.suggestion } })
 
-    // 5. Save Score to DB
-    await $fetch('/api/score', {
+    // Simulate ChatGPT streaming effect for evaluation
+    await typeWriterEffect(evalRes.feedback, (char) => evaluation.value.feedback += char, 15)
+    await typeWriterEffect(evalRes.suggestion, (char) => evaluation.value.suggestion += char, 15)
+
+    // Wait for the AI actual result to finish if it hasn't already
+    aiResult.value = 'Thinking...'
+    const aiRes = await aiResPromise
+    aiResult.value = ''
+
+    // Simulate ChatGPT streaming effect for AI generation
+    await typeWriterEffect(aiRes, (char) => aiResult.value += char, 10)
+
+    // Save Score to DB (runs in background gracefully)
+    $fetch('/api/score', {
       method: 'POST',
       body: {
         playerName: userStore.name,
         score: evalRes.score,
         challengeId: props.challenge.id
       }
-    })
+    }).catch(e => console.error('Failed to save score', e))
 
     userStore.addResult({
       challengeId: props.challenge.id,
@@ -80,8 +93,12 @@ const submitPrompt = async () => {
     if (evalRes.score > 80) {
       triggerConfetti()
     }
+    
+    // Ensure early steps finish
+    await typeUserRes
 
   } catch (error) {
+    console.error(error)
     alert('Error: ' + (error.data?.statusMessage || error.message))
   } finally {
     isSubmitting.value = false
