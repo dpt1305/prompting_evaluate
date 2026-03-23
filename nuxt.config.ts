@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     geminiApiKey: process.env.GEMINI_API_KEY || '', // Server-side only
     geminiModel: process.env.AI_MODEL || 'gemini-2.5-flash',
+    baseUrl: process.env.BASE_URL || 'https://llm.wokushop.com/v1',
     public: {
       // Public variables here
     }

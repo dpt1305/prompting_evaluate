@@ -110,5 +110,19 @@
     "score": 85,
     "challengeId": "rescheduling-a-meeting",
     "createdAt": "2026-03-22T13:29:21.116Z"
+  },
+  {
+    "id": "1774267710170",
+    "playerName": "Test User",
+    "score": 40,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-23T12:08:30.170Z"
+  },
+  {
+    "id": "1774267847338",
+    "playerName": "aaa",
+    "score": 35,
+    "challengeId": "rescheduling-a-meeting",
+    "createdAt": "2026-03-23T12:10:47.338Z"
   }
 ]

@@ -37,7 +37,7 @@ export const callAI = async (prompt, options = {}) => {
     return response.text
   } else {
     // === CÁCH CŨ: DÙNG FETCH WOKUSHOP ===
-    const response = await fetch('https://llm.wokushop.com/v1/chat/completions', {
+    const response = await fetch(`${config.baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.geminiApiKey}`,
