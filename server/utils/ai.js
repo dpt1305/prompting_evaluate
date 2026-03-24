@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 
 export const callAI = async (prompt, options = {}) => {
   const config = useRuntimeConfig();
-  const model = options.model || config.geminiModel || "gemini-2.5-flash";
+  const primaryModel = options.model || config.geminiModel || "gemini-3-flash-preview";
   const temperature = options.temperature || 0.1;
 
   // --- Cấu hình Toggle giữa Wokushop Fetch và Google SDK ---
@@ -23,7 +23,7 @@ export const callAI = async (prompt, options = {}) => {
     });
 
     const response = await ai.models.generateContent({
-      model: model,
+      model: primaryModel,
       contents: prompt,
       config: {
         temperature: temperature,
@@ -36,25 +36,52 @@ export const callAI = async (prompt, options = {}) => {
     }
     return response.text;
   } else {
-    // === CÁCH CŨ: DÙNG FETCH WOKUSHOP ===
-    const response = await fetch(`${config.baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${config.geminiApiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: temperature,
-      }),
-    });
+    // === FETCH VỚI CƠ CHẾ BACKUP ===
+    const tryFetch = async (url, key, targetModel) => {
+      try {
+        const res = await fetch(`${url}/chat/completions`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${key}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: targetModel,
+            messages: [{ role: "user", content: prompt }],
+            temperature: temperature,
+          }),
+        });
+        
+        const json = await res.json();
+        return { response: res, data: json };
+      } catch (err) {
+        return { error: err.message };
+      }
+    };
 
-    const data = await response.json();
+    let { response, data, error } = await tryFetch(config.baseUrl, config.geminiApiKey, primaryModel);
 
-    if (data.error) {
-      console.error("API Error Response:", data.error);
-      throw new Error(`API Error: ${data.error.message || "Unknown error"}`);
+    // Kiểm tra nếu gọi API chính thất bại (lỗi mạng, HTTP error, hoặc API error payload)
+    if (error || (data && data.error) || (response && !response.ok)) {
+      console.warn("Primary API failed:", error || (data && data.error) || (response && response.status));
+      
+      if (config.backupBaseUrl && config.backupApiKey) {
+        console.log("Switching to Backup API...");
+        const backupModel = config.backupGeminiModel || "gemini-2.5-pro";
+        const backupResult = await tryFetch(config.backupBaseUrl, config.backupApiKey, backupModel);
+        response = backupResult.response;
+        data = backupResult.data;
+        error = backupResult.error;
+      }
+    }
+
+    if (error) {
+      throw new Error(`Fetch Error: ${error}`);
+    }
+
+    if (data.error || !response.ok) {
+      console.error("API Error Response:", data.error || response.statusText);
+      throw new Error(`API Error: ${data.error?.message || response.statusText || "Unknown error"}`);
     }
 
     if (!data.choices || !data.choices[0]) {
