@@ -1,18 +1,14 @@
 import fs from 'fs/promises'
 import path from 'path'
+import challengesData from '../data/challenges.json'
+import scoresData from '../data/scores.json'
 
+// Try to resolve path, though writing files won't persist on Vercel Serverless!
 const DATA_DIR = path.resolve(process.cwd(), 'server/data')
-const CHALLENGES_FILE = path.join(DATA_DIR, 'challenges.json')
 const SCORES_FILE = path.join(DATA_DIR, 'scores.json')
 
 export const getChallenges = async () => {
-  try {
-    const data = await fs.readFile(CHALLENGES_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch (error) {
-    console.error('Error reading challenges:', error)
-    return []
-  }
+  return challengesData;
 }
 
 export const getScores = async () => {
@@ -20,8 +16,8 @@ export const getScores = async () => {
     const data = await fs.readFile(SCORES_FILE, 'utf-8')
     return JSON.parse(data)
   } catch (error) {
-    console.error('Error reading scores:', error)
-    return []
+    console.warn('Could not read scores from fs, using bundled data.', error.message)
+    return Array.isArray(scoresData) ? scoresData : []
   }
 }
 
